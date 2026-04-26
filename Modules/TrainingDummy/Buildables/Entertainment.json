@@ -1,0 +1,46 @@
+{
+    "file_data": {
+        "menu_type": "entertainment",
+        "name": "building",
+        "cache_textures": true
+    },
+
+    "TrainingDummy": {
+        "base_class": "Building",
+        "title": "Training dummy",
+        "description": "A humanoid dummy used for combat training. Crew members can practice their combat skills to help reduce stress.",
+        "movement_cost": 40,
+        "mass": 20,
+        "sort_order": 6,
+        "blocking": 0.5,
+        "deterioration_rate": 15,
+        "flammability": 1.0,
+        "base_market_value": 86,
+        "comfort": 1,
+        "is_interactable": true,
+        "interact_type": "POI",
+        "has_interaction_cell": true,
+        "interaction_cell_offset": "Vector2i(0, 1)",
+        "skill_amount_required": 2,
+        "work_to_build": 1200,
+        "rotatable": true,
+        "deconstructable": true,
+        "draw_size": "Vector2i(1, 1)",
+        "size": "Vector2i(1, 1)",
+        "materials": {
+            "use_material_colour": false,
+            "primary_mats": [
+                "Titanium"
+            ],
+            "primary_mats_amount": 16
+        },
+        "health": {
+            "health_class": "BuildingHealth",
+            "base_health": 200
+        },
+        "graphics": {
+            "graphics_class": "GraphicsMultiple",
+            "texture_path": "Textures/TrainingDummy"
+        }
+    }
+}

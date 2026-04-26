@@ -1,0 +1,8 @@
+{
+    "for_game_version": "0.12.0.5",
+    "image_path": "Textures/ModImage.png",
+    "mod_author": "TinyPandas",
+    "mod_description": "Adds a training dummy that crew members can interact with.",
+    "mod_id": "tinypandas.training_dummy",
+    "mod_name": "TrainingDummy"
+}
