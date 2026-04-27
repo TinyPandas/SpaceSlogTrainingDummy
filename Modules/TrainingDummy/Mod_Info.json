@@ -9,6 +9,7 @@
     "workshop_file_id": 3715005281,
     "entry_script": "training_dummy_mod.gd",
     "load_order": 100,
+    "min_modloader_version": "1.1.2",
     "dependencies": [],
     "scripts": [
         {"path": "Scripts/TaskTrainAtDummy.gd", "res_path": "res://Prefabs/AI/PawnAI/Tasks/TaskTrainAtDummy.gd"},
