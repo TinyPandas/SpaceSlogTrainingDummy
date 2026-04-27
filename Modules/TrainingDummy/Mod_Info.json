@@ -1,8 +1,9 @@
 {
-    "mod_name": "Training Dummy",
+    "mod_name": "TrainingDummy",
     "mod_id": "tinypandas.training_dummy",
     "mod_author": "TinyPandas",
-    "mod_description": "Adds a training dummy that crew members can interact with.",
+    "mod_description": "[h1]Training Dummy[/h1]\nAdds a buildable training dummy that crew members use during entertainment time to practice combat skills.\n\n[h2]Features[/h2]\n[list]\n[*] Melee training \u2014 unarmed or melee-weapon pawns lunge at the dummy, gaining Melee XP\n[*] Ranged training \u2014 pawns with a ranged weapon fire at the dummy, gaining Ranged XP\n[*] Mood boost \u2014 pawns gain the \"Had Fun\" thought after each session\n[*] AI-driven \u2014 pawns choose to train autonomously during Entertainment schedule\n[/list]\n\n[h2]Requirements[/h2]\nThis mod uses GDScript for custom AI behaviors and requires [b]SpaceSlogModLoader[/b] to be installed.\n[url=https://github.com/TinyPandas/SpaceSlogModLoader]Install SpaceSlogModLoader[/url]\n\n[h2]Balance[/h2]\n[list]\n[*] ~0.6 XP per session (roughly 1 in-game hour)\n[*] ~40 days to gain a skill level at 2 sessions/day\n[*] Competes with other entertainment options for schedule time\n[/list]",
+    "mod_url": "https://github.com/TinyPandas/SpaceSlogModLoader",
     "for_game_version": "0.12.0.5",
     "image_path": "Textures/ModImage.png",
     "workshop_file_id": 3715005281,
