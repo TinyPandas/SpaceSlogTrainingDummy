@@ -4,6 +4,22 @@ extends SpaceslogMod
 var _context_menu = null
 var _context_menu_patched: bool = false
 
+## Config-bound properties — updated automatically when the player changes settings
+var training_speed_multiplier: float = 1.0
+var xp_per_swing: float = 0.1
+var enable_mood_boost: bool = true
+var dummy_label: String = "Training Dummy"
+
+
+func _on_mod_init(ctx) -> void:
+	# Bind config values to properties — they're set immediately and auto-update on change
+	ModdingAPI.bind_config(context.mod_id, "training_speed_multiplier", self, "training_speed_multiplier")
+	ModdingAPI.bind_config(context.mod_id, "xp_per_swing", self, "xp_per_swing")
+	ModdingAPI.bind_config(context.mod_id, "enable_mood_boost", self, "enable_mood_boost")
+	ModdingAPI.bind_config(context.mod_id, "dummy_label", self, "dummy_label")
+	context.log("Config bound — speed: %s, xp: %s, mood: %s, label: %s" % [
+		training_speed_multiplier, xp_per_swing, enable_mood_boost, dummy_label])
+
 
 func _on_mod_register(api: ModdingAPI) -> void:
 	api.register_task(
@@ -33,8 +49,26 @@ func _on_mod_patch(api: ModdingAPI) -> void:
 
 
 func _on_mod_ready() -> void:
+	# Apply the dummy_label config to the building ref
+	_apply_dummy_label()
+	# Listen for config changes to update the label dynamically
+	if ModdingAPI.has_method("_config_manager") or "_config_manager" in ModdingAPI:
+		ModdingAPI._config_manager.config_value_changed.connect(_on_config_changed)
 	# Listen for the ContextMenu node to appear (when a game is loaded)
 	get_tree().node_added.connect(_on_node_added)
+
+
+func _apply_dummy_label() -> void:
+	if Data.building.has(&"TrainingDummy"):
+		Data.building[&"TrainingDummy"].title = dummy_label
+		context.log("Set Training Dummy label to: %s" % dummy_label)
+
+
+func _on_config_changed(mod_id: String, value_name: String, new_value) -> void:
+	if mod_id != context.mod_id:
+		return
+	if value_name == "dummy_label":
+		_apply_dummy_label()
 
 
 func _on_node_added(node: Node) -> void:
