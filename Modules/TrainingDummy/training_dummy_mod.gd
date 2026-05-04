@@ -54,7 +54,14 @@ func _on_mod_ready() -> void:
 	# Listen for config changes to update the label dynamically
 	if ModdingAPI.has_method("_config_manager") or "_config_manager" in ModdingAPI:
 		ModdingAPI._config_manager.config_value_changed.connect(_on_config_changed)
-	# Listen for the ContextMenu node to appear (when a game is loaded)
+
+	# Reset patch state — the game scene may be rebuilt after _on_mod_ready
+	# (e.g. "Restarting Systems"), so we must NOT eagerly patch here.
+	# We rely on node_added to catch the ContextMenu when it is created.
+	_context_menu_patched = false
+	_context_menu = null
+
+	# Listen for the ContextMenu node to appear (first load or after scene rebuild)
 	get_tree().node_added.connect(_on_node_added)
 
 
@@ -71,14 +78,28 @@ func _on_config_changed(mod_id: String, value_name: String, new_value) -> void:
 		_apply_dummy_label()
 
 
+func _patch_context_menu(node: Node) -> void:
+	_context_menu = node
+	# Remove any _train_at_dummy callables left by previous mod instances.
+	# Old instances stay in the tree after ModLoader reloads, so their
+	# callables are still "valid" — filter by method name instead.
+	var cleaned: Array[Callable] = []
+	for c in node._building_actions:
+		if c.get_method() != &"_train_at_dummy":
+			cleaned.append(c)
+	node._building_actions = cleaned
+	# Append our action
+	node._building_actions.append(_train_at_dummy)
+	_context_menu_patched = true
+	context.log("Patched ContextMenu with 'Train at Training Dummy' action")
+
+
 func _on_node_added(node: Node) -> void:
-	if _context_menu_patched:
-		return
 	if node.name == "ContextMenu" and "_building_actions" in node:
-		_context_menu = node
-		node._building_actions.append(_train_at_dummy)
-		_context_menu_patched = true
-		context.log("Patched ContextMenu with 'Train at Training Dummy' action")
+		# Always re-patch when a new ContextMenu appears — the old one may
+		# have been destroyed during a scene rebuild.
+		_context_menu_patched = false
+		_patch_context_menu(node)
 
 
 func _train_at_dummy(thing, id: int) -> void:
